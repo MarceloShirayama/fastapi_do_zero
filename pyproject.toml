@@ -1,0 +1,44 @@
+[tool.poetry]
+authors = ["Marcelo Shirayama <caixadecorreiodomarcelo@gmail.com>"]
+description = ""
+name = "fastapi-do-zero"
+readme = "README.md"
+version = "0.1.0"
+
+[tool.poetry.dependencies]
+fastapi = "^0.111.0"
+python = "^3.12"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.2"
+pytest-cov = "^5.0.0"
+ruff = "^0.5.0"
+taskipy = "^1.13.0"
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]
+
+[tool.ruff]
+extend-exclude = ["migrations"]
+line-length = 79
+
+[tool.ruff.lint]
+preview = true
+select = ['I', 'F', 'E', 'W', 'PL', 'PT']
+
+[tool.ruff.format]
+preview = true
+quote-style = 'single'
+
+[tool.pytest.ini_options]
+addopts = '-p no:warnings'
+pythonpath = "."
+
+[tool.taskipy.tasks]
+format = 'ruff check . --fix && ruff format .'
+lint = 'ruff check . && ruff check . --diff'
+post_test = 'coverage html'
+pre_test = 'task lint'
+run = 'fastapi dev fastapi_do_zero/app.py'
+test = 'pytest -s -x --cov=fastapi_do_zero -vv'
